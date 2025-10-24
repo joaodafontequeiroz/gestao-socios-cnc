@@ -38,6 +38,9 @@ O projeto segue uma arquitetura **MVC (Model–View–Controller)**, distribuíd
 
 ---
 
+## Demonstração 
+link: https://drive.google.com/file/d/1thcE3zYWbbUDz3AWoEpQnbs18gLWzo92/view?usp=sharing
+
 ## ▶️ Como Executar
 1. Certifique-se de ter o **Java JDK 8 ou superior** instalado.  
 2. Baixe ou clone este repositório em sua máquina:
