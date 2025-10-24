@@ -33,7 +33,7 @@ O projeto segue uma arquitetura **MVC (Model–View–Controller)**, distribuíd
 ## ⚙️ Tecnologias Utilizadas
 - **Linguagem:** Java (JDK 8 ou superior)  
 - **Paradigma:** Programação Orientada a Objetos (POO)  
-- **Ambiente de Desenvolvimento:** VS Code / IntelliJ / Eclipse  
+- **Ambiente de Desenvolvimento:** VS Code
 - **Estrutura:** MVC  
 
 ---
