@@ -1,31 +1,45 @@
-# Sistema de Gestão de Sócios - Clube Náutico Capibaribe
+# 🧭 Projeto: Sistema de Gestão de Sócios - Clube Náutico Capibaribe
 
-## 👥 Integrantes do Grupo
-- João da Fonte Queiroz
-- Addson Cardoso
-- Heitor Meira
-- Marcelo Caldas
+## 👥 Integrantes
+- João da Fonte Queiroz  
+- Addson Cardoso  
+- Heitor Meira  
+- Marcelo Caldas  
 
-**Curso:** Ciências da Computação
-**Disciplina:** Programação Orientada a Objetos
+📁 **Repositório GitHub:**  
+https://github.com/joaodafontequeiroz/gestao-socios-cnc
 
-## 🎯 Sobre o Projeto
-Sistema de gestão desenvolvido em Java para administrar sócios e categorias do Clube Náutico Capibaribe, seguindo os princípios de Programação Orientada a Objetos. Esta é a **Etapa 3** do projeto - primeira versão funcional do sistema.
+---
 
-## 🚀 Como Executar
+## 🎯 Objetivo do Projeto
+Este projeto tem como objetivo desenvolver um **sistema de gestão de sócios** para o **Clube Náutico Capibaribe**, contemplando o cadastro, consulta e controle básico de informações sobre os sócios do clube.  
+Trata-se da **Etapa 3 do Projeto Final da disciplina de Programação Orientada a Objetos**, correspondendo à **primeira versão funcional (protótipo)** do sistema.
 
-### Pré-requisitos
-- Java JDK 8 ou superior instalado
+O foco principal desta etapa é a **implementação da estrutura inicial em Java**, com organização de pacotes, classes básicas, métodos principais e uma **interface de texto (CLI)** que permita interação simples com o usuário.
 
-### 📥 Passo a Passo para Executar
+---
 
-1. **Extraia o projeto** em uma pasta de sua preferência
+## 🧱 Estrutura de Pacotes
+O projeto segue uma arquitetura **MVC (Model–View–Controller)**, distribuída da seguinte forma:
 
-2. **Abra o prompt de comando** e navegue até a pasta do projeto:
-```cmd
-cd "C:\caminho\para\sistema-socios"
+- **model** → classes de domínio do sistema, representando os principais elementos do clube, como `Socio`, `Categoria` e `Administrador`.  
+- **service** → classes responsáveis pela lógica de negócio e manipulação dos dados dos sócios (`SocioService`, `SistemaSocios`).  
+- **controller** → camada de controle que gerencia o fluxo entre a interface e as regras de negócio.  
+- **view** → interface de texto (CLI) que permite interação inicial com o usuário (`InterfaceCLI`).  
+- **util** → classes auxiliares e funções genéricas usadas em todo o sistema (`InputUtil`, `DateUtil`, etc.).  
 
-## 🎥 Demonstração
-<img width="528" height="210" alt="image" src="https://github.com/user-attachments/assets/553c5efb-a48d-4b0e-a996-4069ad9cda5c" />
-<img width="268" height="291" alt="image" src="https://github.com/user-attachments/assets/963a92e7-3b06-4e0a-b5ad-70a2dec41302" />
-<img width="545" height="300" alt="image" src="https://github.com/user-attachments/assets/5c4a3814-b71c-4757-b39e-3ec5dc868fb6" />
+---
+
+## ⚙️ Tecnologias Utilizadas
+- **Linguagem:** Java (JDK 8 ou superior)  
+- **Paradigma:** Programação Orientada a Objetos (POO)  
+- **Ambiente de Desenvolvimento:** VS Code / IntelliJ / Eclipse  
+- **Estrutura:** MVC  
+
+---
+
+## ▶️ Como Executar
+1. Certifique-se de ter o **Java JDK 8 ou superior** instalado.  
+2. Baixe ou clone este repositório em sua máquina:
+   ```bash
+   git clone https://github.com/joaodafontequeiroz/gestao-socios-cnc.git
