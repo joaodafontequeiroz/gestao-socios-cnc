@@ -90,7 +90,7 @@ javac -d bin -cp "src" src/Main.java src/model/*.java src/util/*.java src/servic
 
 # Executar
 java -cp bin Main
-<<<<<<< HEAD
+
 
 
 
