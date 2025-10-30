@@ -1,11 +1,8 @@
 package model;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-/**
- * Classe que representa um Sócio do clube
- */
-public class Socio {
+public class Socio implements Serializable {
     private String nome;
     private String cpf;
     private Categoria categoria;
@@ -59,6 +56,7 @@ public class Socio {
         System.out.println("CPF: " + cpf);
         System.out.println("Categoria: " + categoria.getNomeCategoria());
         System.out.println("Data de Cadastro: " + dataCadastro);
+        System.out.println("Mensalidade: R$ " + String.format("%.2f", categoria.getPrecoMensal()));
     }
     
     public void atualizarDados(String novoNome, Categoria novaCategoria) {
@@ -69,24 +67,7 @@ public class Socio {
     
     @Override
     public String toString() {
-        return "Socio{" +
-                "nome='" + nome + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", categoria=" + (categoria != null ? categoria.getNomeCategoria() : "null") +
-                ", dataCadastro='" + dataCadastro + '\'' +
-                '}';
-    }
-    
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Socio)) return false;
-        Socio socio = (Socio) o;
-        return Objects.equals(cpf, socio.cpf);
-    }
-    
-    @Override
-    public int hashCode() {
-        return Objects.hash(cpf);
+        return "Socio{nome='" + nome + "', cpf='" + cpf + "', categoria=" + categoria.getNomeCategoria() + 
+               ", mensalidade=R$ " + String.format("%.2f", categoria.getPrecoMensal()) + "}";
     }
 }

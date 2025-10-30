@@ -1,18 +1,24 @@
 package model;
 
-/**
- * Classe que representa uma Categoria de sócio
- */
-public class Categoria {
+import java.io.Serializable;
+
+public class Categoria implements Serializable {
     private String nomeCategoria;
     private String beneficios;
+    private double precoMensal;
     
     public Categoria() {
     }
     
-    public Categoria(String nomeCategoria, String beneficios) {
+    public Categoria(String nomeCategoria, String beneficios, double precoMensal) {
         this.nomeCategoria = nomeCategoria;
         this.beneficios = beneficios;
+        this.precoMensal = precoMensal;
+    }
+    
+    // Construtor para compatibilidade
+    public Categoria(String nomeCategoria, String beneficios) {
+        this(nomeCategoria, beneficios, 0.0);
     }
     
     public String getNomeCategoria() {
@@ -31,12 +37,29 @@ public class Categoria {
         this.beneficios = beneficios;
     }
     
+    public double getPrecoMensal() {
+        return precoMensal;
+    }
+    
+    public void setPrecoMensal(double precoMensal) {
+        this.precoMensal = precoMensal;
+    }
+    
     public void exibirBeneficios() {
-        System.out.println("Benefícios da categoria " + nomeCategoria + ": " + beneficios);
+        if (precoMensal > 0) {
+            System.out.println("Categoria: " + nomeCategoria + " - R$ " + String.format("%.2f", precoMensal) + "/mês");
+        } else {
+            System.out.println("Categoria: " + nomeCategoria + " - Gratuita");
+        }
+        System.out.println("Benefícios: " + beneficios);
     }
     
     @Override
     public String toString() {
-        return nomeCategoria + " - " + beneficios;
+        if (precoMensal > 0) {
+            return String.format("%s - R$ %.2f/mês - %s", nomeCategoria, precoMensal, beneficios);
+        } else {
+            return String.format("%s - Gratuito - %s", nomeCategoria, beneficios);
+        }
     }
 }

@@ -1,9 +1,8 @@
 package model;
 
-/**
- * Classe que representa um Administrador do sistema
- */
-public class Administrador {
+import java.io.Serializable;
+
+public class Administrador implements Serializable {
     private String nome;
     private String login;
     private String senha;
@@ -39,14 +38,6 @@ public class Administrador {
     
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-    
-    public void gerenciarSocios() {
-        System.out.println("Gerenciando sócios...");
-    }
-    
-    public void gerenciarCategorias() {
-        System.out.println("Gerenciando categorias...");
     }
     
     public boolean autenticar(String login, String senha) {

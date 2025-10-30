@@ -3,9 +3,6 @@ package util;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Classe utilitária para manipulação de datas
- */
 public class DateUtil {
     
     public static String getDataAtualFormatada() {
