@@ -1,48 +1,92 @@
-# 🧭 Projeto: Sistema de Gestão de Sócios - Clube Náutico Capibaribe
+# ⚓ Sistema de Gestão de Sócios - Clube Náutico Capibaribe
 
 ## 👥 Integrantes
-- João da Fonte Queiroz  
-- Addson Cardoso  
-- Heitor Meira  
-- Marcelo Caldas  
+- **João da Fonte Queiroz**  
+- **Addson Cardoso**  
+- **Heitor Meira**  
+- **Marcelo Caldas**  
+
+**Curso:** Ciências da Computação  
+**Disciplina:** Programação Orientada a Objetos  
 
 📁 **Repositório GitHub:**  
 https://github.com/joaodafontequeiroz/gestao-socios-cnc
 
 ---
 
-## 🎯 Objetivo do Projeto
-Este projeto tem como objetivo desenvolver um **sistema de gestão de sócios** para o **Clube Náutico Capibaribe**, contemplando o cadastro, consulta e controle básico de informações sobre os sócios do clube.  
-Trata-se da **Etapa 3 do Projeto Final da disciplina de Programação Orientada a Objetos**, correspondendo à **primeira versão funcional (protótipo)** do sistema.
+## 🎯 ETAPA 4 - Versão Beta Funcional
 
-O foco principal desta etapa é a **implementação da estrutura inicial em Java**, com organização de pacotes, classes básicas, métodos principais e uma **interface de texto (CLI)** que permita interação simples com o usuário.
+### ✅ Funcionalidades Implementadas
 
----
+#### 🔧 Módulo Administrativo
+- **Cadastro de Sócios** com validação de CPF e nome
+- **Edição de Sócios** com tratamento de erros
+- **Exclusão de Sócios** com confirmação
+- **Listagem Completa** de todos os sócios
+- **Gerenciamento de Categorias** (CRUD completo)
 
-## 🧱 Estrutura de Pacotes
-O projeto segue uma arquitetura **MVC (Model–View–Controller)**, distribuída da seguinte forma:
+#### 👤 Módulo do Sócio
+- **Acesso por CPF** com validação
+- **Visualização de dados** pessoais e mensalidade
+- **Atualização de informações** e categoria
+- **Consulta de benefícios** da categoria atual
 
-- **model** → classes de domínio do sistema, representando os principais elementos do clube, como `Socio`, `Categoria` e `Administrador`.  
-- **service** → classes responsáveis pela lógica de negócio e manipulação dos dados dos sócios (`SocioService`, `SistemaSocios`).  
-- **controller** → camada de controle que gerencia o fluxo entre a interface e as regras de negócio.  
-- **view** → interface de texto (CLI) que permite interação inicial com o usuário (`InterfaceCLI`).  
-- **util** → classes auxiliares e funções genéricas usadas em todo o sistema (`InputUtil`, `DateUtil`, etc.).  
-
----
-
-## ⚙️ Tecnologias Utilizadas
-- **Linguagem:** Java (JDK 8 ou superior)  
-- **Paradigma:** Programação Orientada a Objetos (POO)  
-- **Ambiente de Desenvolvimento:** VS Code
-- **Estrutura:** MVC  
+#### 💾 Sistema
+- **Persistência em arquivos** (dados salvos automaticamente)
+- **Tratamento de exceções** em todas as operações
+- **Validações robustas** de entrada de dados
+- **Interface amigável** com menus intuitivos
 
 ---
 
-## Demonstração 
-link: https://drive.google.com/file/d/1thcE3zYWbbUDz3AWoEpQnbs18gLWzo92/view?usp=sharing
+## 🏷️ CATEGORIAS OFICIAIS IMPLEMENTADAS
 
-## ▶️ Como Executar
-1. Certifique-se de ter o **Java JDK 8 ou superior** instalado.  
-2. Baixe ou clone este repositório em sua máquina:
-   ```bash
-   git clone https://github.com/joaodafontequeiroz/gestao-socios-cnc.git
+O sistema inclui as **8 categorias oficiais** do Clube Náutico Capibaribe:
+
+1. **100% TIMBA** - R$ 399,90/mês - 100% desconto TODOS setores + camisas oficiais 2025
+2. **BRANCO DE PAZ** - R$ 99,90/mês - 100% desconto Hexa, Vermelho e Caldeirão
+3. **PATRIMONIAL** - R$ 79,90/mês - 70% desconto Vermelho e Hexa (Jóia: R$ 3.000,00)
+4. **VERMELHO DE LUTA** - R$ 39,90/mês - 100% desconto Caldeirão + 60% Hexa/Vermelho
+5. **SÓCIO CALDEIRÃO** - R$ 24,90/mês - 100% desconto Setor Caldeirão
+6. **AQUISIÇÃO DE CADEIRA** - Gratuito - Prioridade 1ª ingresso (Jóia: R$ 3.000,00)
+7. **TODO MUNDO É NÁUTICO** - Gratuito - Prioridade 4ª ingresso (Taxa: R$ 25,00 carteira)
+8. **TIMBU +** - Gratuito - 100% desconto titular + 1 acompanhante (PCD)
+
+---
+
+## 🏗️ Arquitetura do Sistema
+SISTEMA_SOCIOS/
+├── src/
+│ ├── model/ → Entidades do sistema
+│ │ ├── Administrador.java
+│ │ ├── Categoria.java (Atualizada com preço mensal)
+│ │ └── Socio.java (Atualizada com mensalidade)
+│ ├── service/ → Lógica de negócio
+│ │ └── SistemaSocios.java (Categorias reais implementadas)
+│ ├── util/ → Utilitários
+│ │ ├── DateUtil.java
+│ │ ├── FileManager.java
+│ │ └── Validador.java
+│ ├── view/ → Interface
+│ │ └── InterfaceCLI.java
+│ └── Main.java
+├── data/ → Arquivos de persistência
+│ ├── socios.dat
+│ └── categorias.dat
+└── README.md
+
+
+---
+
+## 🚀 Como Executar
+
+### Pré-requisitos
+- Java JDK 8 ou superior
+
+### Compilação e Execução
+```bash
+# Compilar
+javac -d bin -cp "src" src/Main.java src/model/*.java src/util/*.java src/service/*.java src/view/*.java
+
+# Executar
+java -cp bin Main
