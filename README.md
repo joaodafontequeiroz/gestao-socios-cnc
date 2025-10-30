@@ -55,7 +55,10 @@ O sistema inclui as **8 categorias oficiais** do Clube Náutico Capibaribe:
 ---
 
 ## 🏗️ Arquitetura do Sistema
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8329ac544fcaced7ed14348dd395d7d8f9ac728d
 SISTEMA_SOCIOS/
 ├── src/
 │ ├── model/ → Entidades do sistema
@@ -76,6 +79,10 @@ SISTEMA_SOCIOS/
 │ └── categorias.dat
 └── README.md
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8329ac544fcaced7ed14348dd395d7d8f9ac728d
 ---
 
 ## 🚀 Como Executar
@@ -90,5 +97,8 @@ javac -d bin -cp "src" src/Main.java src/model/*.java src/util/*.java src/servic
 
 # Executar
 java -cp bin Main
+<<<<<<< HEAD
 
 #video codigo funcionando: 
+=======
+>>>>>>> 8329ac544fcaced7ed14348dd395d7d8f9ac728d
