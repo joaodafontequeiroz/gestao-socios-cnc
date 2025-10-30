@@ -76,6 +76,8 @@ SISTEMA_SOCIOS/
 │ └── categorias.dat
 └── README.md
 
+#video codigo funcionando: https://drive.google.com/file/d/1D-ABt-bp3E_xzog9znUAFS4bPv98TMyl/view?usp=sharing
+
 ## 🚀 Como Executar
 
 ### Pré-requisitos
@@ -90,5 +92,5 @@ javac -d bin -cp "src" src/Main.java src/model/*.java src/util/*.java src/servic
 java -cp bin Main
 <<<<<<< HEAD
 
-#video codigo funcionando: https://drive.google.com/file/d/1D-ABt-bp3E_xzog9znUAFS4bPv98TMyl/view?usp=sharing
+
 
