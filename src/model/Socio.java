@@ -2,55 +2,26 @@ package model;
 
 import java.io.Serializable;
 
-public class Socio implements Serializable {
-    private String nome;
-    private String cpf;
+public class Socio extends Pessoa implements Serializable {
     private Categoria categoria;
     private String dataCadastro;
     
-    public Socio() {
-    }
+    public Socio() {}
     
     public Socio(String nome, String cpf, Categoria categoria, String dataCadastro) {
-        this.nome = nome;
-        this.cpf = cpf;
+        super(nome, cpf);
         this.categoria = categoria;
         this.dataCadastro = dataCadastro;
     }
     
-    public String getNome() {
-        return nome;
-    }
+    public Categoria getCategoria() { return categoria; }
+    public void setCategoria(Categoria categoria) { this.categoria = categoria; }
     
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public String getDataCadastro() { return dataCadastro; }
+    public void setDataCadastro(String dataCadastro) { this.dataCadastro = dataCadastro; }
     
-    public String getCpf() {
-        return cpf;
-    }
-    
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-    
-    public Categoria getCategoria() {
-        return categoria;
-    }
-    
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
-    
-    public String getDataCadastro() {
-        return dataCadastro;
-    }
-    
-    public void setDataCadastro(String dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-    
-    public void visualizarDados() {
+    @Override
+    public void exibirDados() {
         System.out.println("=== DADOS DO SÓCIO ===");
         System.out.println("Nome: " + nome);
         System.out.println("CPF: " + cpf);

@@ -5,6 +5,8 @@ import model.Socio;
 import model.Categoria;
 import model.Administrador;
 import util.Validador;
+import exception.*;
+
 import java.util.Scanner;
 
 public class InterfaceCLI {
@@ -27,25 +29,18 @@ public class InterfaceCLI {
             System.out.print("Escolha uma opção: ");
             
             String entrada = scanner.nextLine();
-            
             try {
                 int opcao = Integer.parseInt(entrada);
-                
                 switch (opcao) {
-                    case 1:
-                        autenticarAdministrador();
-                        break;
-                    case 2:
-                        mostrarMenuSocio();
-                        break;
-                    case 3:
-                        System.out.println("Saindo do sistema...");
+                    case 1: autenticarAdministrador(); break;
+                    case 2: mostrarMenuSocio(); break;
+                    case 3: 
+                        System.out.println("Saindo do sistema..."); 
                         return;
-                    default:
-                        System.out.println("Opção inválida!");
+                    default: System.out.println("Opção inválida!");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Digite um número válido!");
+                System.out.println("❌ Digite um número válido!");
             }
         }
     }
@@ -53,14 +48,13 @@ public class InterfaceCLI {
     private void autenticarAdministrador() {
         System.out.print("Login: ");
         String login = scanner.nextLine();
-        
         System.out.print("Senha: ");
         String senha = scanner.nextLine();
         
         if (admin.autenticar(login, senha)) {
             mostrarMenuAdministrador();
         } else {
-            System.out.println("Credenciais inválidas!");
+            System.out.println("❌ Credenciais inválidas!");
         }
     }
     
@@ -76,33 +70,19 @@ public class InterfaceCLI {
             System.out.print("Escolha uma opção: ");
             
             String entrada = scanner.nextLine();
-            
             try {
                 int opcao = Integer.parseInt(entrada);
-                
                 switch (opcao) {
-                    case 1:
-                        cadastrarSocio();
-                        break;
-                    case 2:
-                        editarSocio();
-                        break;
-                    case 3:
-                        removerSocio();
-                        break;
-                    case 4:
-                        sistema.listarSocios();
-                        break;
-                    case 5:
-                        gerenciarCategorias();
-                        break;
-                    case 6:
-                        return;
-                    default:
-                        System.out.println("Opção inválida!");
+                    case 1: cadastrarSocio(); break;
+                    case 2: editarSocio(); break;
+                    case 3: removerSocio(); break;
+                    case 4: sistema.listarSocios(); break;
+                    case 5: gerenciarCategorias(); break;
+                    case 6: return;
+                    default: System.out.println("❌ Opção inválida!");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Digite um número válido!");
+                System.out.println("❌ Digite um número válido!");
             }
         }
     }
@@ -118,30 +98,18 @@ public class InterfaceCLI {
             System.out.print("Escolha uma opção: ");
             
             String entrada = scanner.nextLine();
-            
             try {
                 int opcao = Integer.parseInt(entrada);
-                
                 switch (opcao) {
-                    case 1:
-                        sistema.listarCategorias();
-                        break;
-                    case 2:
-                        sistema.adicionarCategoria();
-                        break;
-                    case 3:
-                        sistema.editarCategoria();
-                        break;
-                    case 4:
-                        sistema.removerCategoria();
-                        break;
-                    case 5:
-                        return;
-                    default:
-                        System.out.println("Opção inválida!");
+                    case 1: sistema.listarCategorias(); break;
+                    case 2: adicionarCategoria(); break;
+                    case 3: editarCategoria(); break;
+                    case 4: removerCategoria(); break;
+                    case 5: return;
+                    default: System.out.println("❌ Opção inválida!");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Digite um número válido!");
+                System.out.println("❌ Digite um número válido!");
             }
         }
     }
@@ -150,14 +118,16 @@ public class InterfaceCLI {
         System.out.print("Digite seu CPF: ");
         String cpf = scanner.nextLine();
         
-        if (!Validador.validarCPF(cpf)) {
-            System.out.println("CPF inválido!");
+        try {
+            Validador.validarCPF(cpf);
+        } catch (CPFInvalidoException e) {
+            System.out.println("❌ " + e.getMessage());
             return;
         }
         
         Socio socio = sistema.encontrarSocioPorCPF(cpf);
         if (socio == null) {
-            System.out.println("Sócio não encontrado!");
+            System.out.println("❌ Sócio não encontrado!");
             return;
         }
         
@@ -170,49 +140,33 @@ public class InterfaceCLI {
             System.out.print("Escolha uma opção: ");
             
             String entrada = scanner.nextLine();
-            
             try {
                 int opcao = Integer.parseInt(entrada);
-                
                 switch (opcao) {
-                    case 1:
-                        socio.visualizarDados();
-                        break;
-                    case 2:
-                        atualizarDadosSocio(socio);
-                        break;
-                    case 3:
-                        socio.getCategoria().exibirBeneficios();
-                        break;
-                    case 4:
-                        return;
-                    default:
-                        System.out.println("Opção inválida!");
+                    case 1: socio.exibirDados(); break;
+                    case 2: atualizarDadosSocio(socio); break;
+                    case 3: socio.getCategoria().exibirBeneficios(); break;
+                    case 4: return;
+                    default: System.out.println("❌ Opção inválida!");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Digite um número válido!");
+                System.out.println("❌ Digite um número válido!");
             }
         }
     }
     
     private void cadastrarSocio() {
         System.out.println("\n📋 CADASTRAR NOVO SÓCIO");
-        
         System.out.print("Nome: ");
         String nome = scanner.nextLine();
         
         if (!Validador.validarNome(nome)) {
-            System.out.println("Nome inválido!");
+            System.out.println("❌ Nome deve ter pelo menos 2 caracteres!");
             return;
         }
         
         System.out.print("CPF: ");
         String cpf = scanner.nextLine();
-        
-        if (!Validador.validarCPF(cpf)) {
-            System.out.println("CPF inválido!");
-            return;
-        }
         
         System.out.println("Categorias disponíveis:");
         sistema.listarCategorias();
@@ -223,31 +177,97 @@ public class InterfaceCLI {
             int categoriaIndex = Integer.parseInt(entrada);
             
             if (categoriaIndex < 1 || categoriaIndex > sistema.getCategorias().size()) {
-                System.out.println("Categoria inválida!");
+                System.out.println("❌ Categoria inválida!");
                 return;
             }
             
             Categoria categoria = sistema.getCategorias().get(categoriaIndex - 1);
             String dataAtual = java.time.LocalDate.now().toString();
-            
             Socio novoSocio = new Socio(nome, cpf, categoria, dataAtual);
+            
             sistema.cadastrarSocio(novoSocio);
+            System.out.println("✅ Sócio cadastrado com sucesso!");
             
         } catch (NumberFormatException e) {
-            System.out.println("Digite um número válido!");
+            System.out.println("❌ Digite um número válido!");
+        } catch (CPFInvalidoException e) {
+            System.out.println("❌ " + e.getMessage());
+        } catch (SocioJaCadastradoException e) {
+            System.out.println("❌ " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao cadastrar sócio: " + e.getMessage());
         }
     }
     
     private void editarSocio() {
         System.out.print("CPF do sócio a editar: ");
         String cpf = scanner.nextLine();
-        sistema.editarSocio(cpf);
+        
+        try {
+            sistema.editarSocio(cpf);
+            System.out.println("✅ Sócio editado com sucesso!");
+        } catch (CPFInvalidoException e) {
+            System.out.println("❌ " + e.getMessage());
+        } catch (SocioNaoEncontradoException e) {
+            System.out.println("❌ " + e.getMessage());
+        } catch (CategoriaInvalidaException e) {
+            System.out.println("❌ " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("❌ " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao editar sócio: " + e.getMessage());
+        }
     }
     
     private void removerSocio() {
         System.out.print("CPF do sócio a remover: ");
         String cpf = scanner.nextLine();
-        sistema.removerSocio(cpf);
+        
+        try {
+            sistema.removerSocio(cpf);
+            System.out.println("✅ Sócio removido com sucesso!");
+        } catch (CPFInvalidoException e) {
+            System.out.println("❌ " + e.getMessage());
+        } catch (SocioNaoEncontradoException e) {
+            System.out.println("❌ " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao remover sócio: " + e.getMessage());
+        }
+    }
+    
+    private void adicionarCategoria() {
+        try {
+            sistema.adicionarCategoria();
+            System.out.println("✅ Categoria adicionada com sucesso!");
+        } catch (IllegalArgumentException e) {
+            System.out.println("❌ " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao adicionar categoria: " + e.getMessage());
+        }
+    }
+    
+    private void editarCategoria() {
+        try {
+            sistema.editarCategoria();
+            System.out.println("✅ Categoria atualizada com sucesso!");
+        } catch (CategoriaInvalidaException e) {
+            System.out.println("❌ " + e.getMessage());
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            System.out.println("❌ " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao editar categoria: " + e.getMessage());
+        }
+    }
+    
+    private void removerCategoria() {
+        try {
+            sistema.removerCategoria();
+            System.out.println("✅ Categoria removida com sucesso!");
+        } catch (CategoriaInvalidaException | IllegalStateException e) {
+            System.out.println("❌ " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao remover categoria: " + e.getMessage());
+        }
     }
     
     private void atualizarDadosSocio(Socio socio) {
@@ -255,7 +275,7 @@ public class InterfaceCLI {
         String novoNome = scanner.nextLine();
         
         if (!Validador.validarNome(novoNome)) {
-            System.out.println("Nome inválido!");
+            System.out.println("❌ Nome deve ter pelo menos 2 caracteres!");
             return;
         }
         
@@ -268,15 +288,16 @@ public class InterfaceCLI {
             int categoriaIndex = Integer.parseInt(entrada);
             
             if (categoriaIndex < 1 || categoriaIndex > sistema.getCategorias().size()) {
-                System.out.println("Categoria inválida!");
+                System.out.println("❌ Categoria inválida!");
                 return;
             }
             
             Categoria novaCategoria = sistema.getCategorias().get(categoriaIndex - 1);
             socio.atualizarDados(novoNome, novaCategoria);
+            System.out.println("✅ Dados atualizados com sucesso!");
             
         } catch (NumberFormatException e) {
-            System.out.println("Digite um número válido!");
+            System.out.println("❌ Digite um número válido!");
         }
     }
 }

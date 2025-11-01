@@ -7,8 +7,7 @@ public class Categoria implements Serializable {
     private String beneficios;
     private double precoMensal;
     
-    public Categoria() {
-    }
+    public Categoria() {}
     
     public Categoria(String nomeCategoria, String beneficios, double precoMensal) {
         this.nomeCategoria = nomeCategoria;
@@ -16,34 +15,18 @@ public class Categoria implements Serializable {
         this.precoMensal = precoMensal;
     }
     
-    // Construtor para compatibilidade
     public Categoria(String nomeCategoria, String beneficios) {
         this(nomeCategoria, beneficios, 0.0);
     }
     
-    public String getNomeCategoria() {
-        return nomeCategoria;
-    }
+    public String getNomeCategoria() { return nomeCategoria; }
+    public void setNomeCategoria(String nomeCategoria) { this.nomeCategoria = nomeCategoria; }
     
-    public void setNomeCategoria(String nomeCategoria) {
-        this.nomeCategoria = nomeCategoria;
-    }
+    public String getBeneficios() { return beneficios; }
+    public void setBeneficios(String beneficios) { this.beneficios = beneficios; }
     
-    public String getBeneficios() {
-        return beneficios;
-    }
-    
-    public void setBeneficios(String beneficios) {
-        this.beneficios = beneficios;
-    }
-    
-    public double getPrecoMensal() {
-        return precoMensal;
-    }
-    
-    public void setPrecoMensal(double precoMensal) {
-        this.precoMensal = precoMensal;
-    }
+    public double getPrecoMensal() { return precoMensal; }
+    public void setPrecoMensal(double precoMensal) { this.precoMensal = precoMensal; }
     
     public void exibirBeneficios() {
         if (precoMensal > 0) {

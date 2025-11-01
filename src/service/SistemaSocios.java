@@ -4,6 +4,8 @@ import model.Socio;
 import model.Categoria;
 import util.FileManager;
 import util.Validador;
+import exception.*;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -23,7 +25,6 @@ public class SistemaSocios {
     }
     
     private void inicializarCategoriasReais() {
-        // ✅ CATEGORIAS OFICIAIS DO CLUBE NÁUTICO CAPIBARIBE
         categorias.add(new Categoria("100% TIMBA", "100% desconto TODOS setores + camisas oficiais 2025", 399.90));
         categorias.add(new Categoria("BRANCO DE PAZ", "100% desconto Hexa, Vermelho e Caldeirão", 99.90));
         categorias.add(new Categoria("PATRIMONIAL", "70% desconto Vermelho e Hexa (Jóia: R$ 3.000,00)", 79.90));
@@ -42,96 +43,73 @@ public class SistemaSocios {
         FileManager.salvarCategorias(categorias);
     }
     
-    public void cadastrarSocio(Socio socio) {
-        try {
-            if (!Validador.validarCPF(socio.getCpf())) {
-                System.out.println("CPF inválido! Deve ter 11 dígitos.");
-                return;
-            }
-            
-            if (encontrarSocioPorCPF(socio.getCpf()) != null) {
-                System.out.println("CPF já cadastrado!");
-                return;
-            }
-            
-            if (!Validador.validarNome(socio.getNome())) {
-                System.out.println("Nome inválido! Deve ter pelo menos 2 caracteres.");
-                return;
-            }
-            
-            socios.add(socio);
-            salvarDados();
-            System.out.println("Sócio cadastrado com sucesso!");
-            
-        } catch (Exception e) {
-            System.out.println("Erro ao cadastrar sócio: " + e.getMessage());
+    public void cadastrarSocio(Socio socio) throws SocioJaCadastradoException, CPFInvalidoException {
+        Validador.validarCPF(socio.getCpf());
+        
+        if (encontrarSocioPorCPF(socio.getCpf()) != null) {
+            throw new SocioJaCadastradoException(socio.getCpf());
         }
+        
+        if (!Validador.validarNome(socio.getNome())) {
+            throw new IllegalArgumentException("Nome deve ter pelo menos 2 caracteres");
+        }
+        
+        socios.add(socio);
+        salvarDados();
     }
     
-    public void editarSocio(String cpf) {
+    public void editarSocio(String cpf) throws SocioNaoEncontradoException, CPFInvalidoException, CategoriaInvalidaException {
+        Validador.validarCPF(cpf);
+        
+        Socio socio = encontrarSocioPorCPF(cpf);
+        if (socio == null) {
+            throw new SocioNaoEncontradoException(cpf);
+        }
+        
+        System.out.print("Novo nome: ");
+        String novoNome = scanner.nextLine();
+        
+        if (!Validador.validarNome(novoNome)) {
+            throw new IllegalArgumentException("Nome deve ter pelo menos 2 caracteres");
+        }
+        
+        System.out.println("Categorias disponíveis:");
+        listarCategorias();
+        System.out.print("Nova categoria (número): ");
+        
+        String entrada = scanner.nextLine();
+        int categoriaIndex;
+        
         try {
-            Socio socio = encontrarSocioPorCPF(cpf);
-            if (socio == null) {
-                System.out.println("Sócio não encontrado!");
-                return;
-            }
-            
-            System.out.print("Novo nome: ");
-            String novoNome = scanner.nextLine();
-            
-            if (!Validador.validarNome(novoNome)) {
-                System.out.println("Nome inválido!");
-                return;
-            }
-            
-            System.out.println("Categorias disponíveis:");
-            listarCategorias();
-            System.out.print("Nova categoria (número): ");
-            
-            String entrada = scanner.nextLine();
-            int categoriaIndex = Integer.parseInt(entrada);
-            
-            if (categoriaIndex < 1 || categoriaIndex > categorias.size()) {
-                System.out.println("Categoria inválida!");
-                return;
-            }
-            
-            Categoria novaCategoria = categorias.get(categoriaIndex - 1);
-            socio.atualizarDados(novoNome, novaCategoria);
-            salvarDados();
-            System.out.println("Sócio editado com sucesso!");
-            
+            categoriaIndex = Integer.parseInt(entrada);
         } catch (NumberFormatException e) {
-            System.out.println("Digite um número válido!");
-        } catch (Exception e) {
-            System.out.println("Erro ao editar sócio: " + e.getMessage());
+            throw new CategoriaInvalidaException("Digite um número válido!");
         }
+        
+        if (categoriaIndex < 1 || categoriaIndex > categorias.size()) {
+            throw new CategoriaInvalidaException(categoriaIndex);
+        }
+        
+        Categoria novaCategoria = categorias.get(categoriaIndex - 1);
+        socio.atualizarDados(novoNome, novaCategoria);
+        salvarDados();
     }
     
-    public void removerSocio(String cpf) {
-        try {
-            if (!Validador.validarCPF(cpf)) {
-                System.out.println("CPF inválido!");
-                return;
+    public void removerSocio(String cpf) throws SocioNaoEncontradoException, CPFInvalidoException {
+        Validador.validarCPF(cpf);
+        
+        boolean encontrou = false;
+        for (int i = 0; i < socios.size(); i++) {
+            if (socios.get(i).getCpf().equals(cpf)) {
+                socios.remove(i);
+                salvarDados();
+                encontrou = true;
+                break;
             }
-            
-            boolean encontrou = false;
-            for (int i = 0; i < socios.size(); i++) {
-                if (socios.get(i).getCpf().equals(cpf)) {
-                    socios.remove(i);
-                    salvarDados();
-                    System.out.println("Sócio removido com sucesso!");
-                    encontrou = true;
-                    break;
-                }
-            }
-            
-            if (!encontrou) {
-                System.out.println("Sócio não encontrado!");
-            }
-            
-        } catch (Exception e) {
-            System.out.println("Erro ao remover sócio: " + e.getMessage());
+        }
+        
+        if (!encontrou) {
+            throw new SocioNaoEncontradoException(cpf);
         }
     }
     
@@ -153,119 +131,109 @@ public class SistemaSocios {
         }
     }
     
-    public void adicionarCategoria() {
-        try {
-            System.out.print("Nome da nova categoria: ");
-            String nome = scanner.nextLine();
-            
-            if (!Validador.validarNome(nome)) {
-                System.out.println("Nome inválido!");
-                return;
-            }
-            
-            System.out.print("Benefícios: ");
-            String beneficios = scanner.nextLine();
-            
-            if (beneficios.trim().isEmpty()) {
-                System.out.println("Benefícios não podem estar vazios!");
-                return;
-            }
-            
-            System.out.print("Preço mensal (R$): ");
-            double preco = Double.parseDouble(scanner.nextLine());
-            
-            Categoria novaCategoria = new Categoria(nome, beneficios, preco);
-            categorias.add(novaCategoria);
-            salvarDados();
-            System.out.println("Categoria adicionada com sucesso!");
-            
-        } catch (NumberFormatException e) {
-            System.out.println("Digite um preço válido!");
-        } catch (Exception e) {
-            System.out.println("Erro ao adicionar categoria: " + e.getMessage());
+    public void adicionarCategoria() throws IllegalArgumentException {
+        System.out.print("Nome da nova categoria: ");
+        String nome = scanner.nextLine();
+        
+        if (!Validador.validarNome(nome)) {
+            throw new IllegalArgumentException("Nome deve ter pelo menos 2 caracteres");
         }
-    }
-    
-    public void editarCategoria() {
-        try {
-            listarCategorias();
-            
-            if (categorias.isEmpty()) {
-                System.out.println("Não há categorias para editar.");
-                return;
-            }
-            
-            System.out.print("Número da categoria a editar: ");
-            String entrada = scanner.nextLine();
-            int index = Integer.parseInt(entrada);
-            
-            if (index < 1 || index > categorias.size()) {
-                System.out.println("Categoria inválida!");
-                return;
-            }
-            
-            Categoria categoria = categorias.get(index - 1);
-            System.out.println("Editando: " + categoria.getNomeCategoria());
-            
-            System.out.print("Novos benefícios: ");
-            String novosBeneficios = scanner.nextLine();
-            
-            if (novosBeneficios.trim().isEmpty()) {
-                System.out.println("Benefícios não podem estar vazios!");
-                return;
-            }
-            
-            System.out.print("Novo preço mensal (R$): ");
-            double novoPreco = Double.parseDouble(scanner.nextLine());
-            
-            categoria.setBeneficios(novosBeneficios);
-            categoria.setPrecoMensal(novoPreco);
-            salvarDados();
-            System.out.println("Categoria atualizada com sucesso!");
-            
-        } catch (NumberFormatException e) {
-            System.out.println("Digite valores numéricos válidos!");
-        } catch (Exception e) {
-            System.out.println("Erro ao editar categoria: " + e.getMessage());
+        
+        System.out.print("Benefícios: ");
+        String beneficios = scanner.nextLine();
+        
+        if (beneficios.trim().isEmpty()) {
+            throw new IllegalArgumentException("Benefícios não podem estar vazios!");
         }
-    }
-    
-    public void removerCategoria() {
+        
+        System.out.print("Preço mensal (R$): ");
+        String entradaPreco = scanner.nextLine();
+        
+        double preco;
         try {
-            listarCategorias();
-            
-            if (categorias.isEmpty()) {
-                System.out.println("Não há categorias para remover.");
-                return;
-            }
-            
-            System.out.print("Número da categoria a remover: ");
-            String entrada = scanner.nextLine();
-            int index = Integer.parseInt(entrada);
-            
-            if (index < 1 || index > categorias.size()) {
-                System.out.println("Categoria inválida!");
-                return;
-            }
-            
-            Categoria categoriaRemovida = categorias.remove(index - 1);
-            salvarDados();
-            System.out.println("Categoria removida com sucesso!");
-            
+            preco = Double.parseDouble(entradaPreco);
         } catch (NumberFormatException e) {
-            System.out.println("Digite um número válido!");
-        } catch (Exception e) {
-            System.out.println("Erro ao remover categoria: " + e.getMessage());
+            throw new IllegalArgumentException("Digite um preço válido!");
         }
+        
+        Categoria novaCategoria = new Categoria(nome, beneficios, preco);
+        categorias.add(novaCategoria);
+        salvarDados();
     }
     
-    public ArrayList<Categoria> getCategorias() {
-        return categorias;
+    public void editarCategoria() throws CategoriaInvalidaException, IllegalArgumentException {
+        listarCategorias();
+        
+        if (categorias.isEmpty()) {
+            throw new IllegalStateException("Não há categorias para editar.");
+        }
+        
+        System.out.print("Número da categoria a editar: ");
+        String entrada = scanner.nextLine();
+        
+        int index;
+        try {
+            index = Integer.parseInt(entrada);
+        } catch (NumberFormatException e) {
+            throw new CategoriaInvalidaException("Digite um número válido!");
+        }
+        
+        if (index < 1 || index > categorias.size()) {
+            throw new CategoriaInvalidaException(index);
+        }
+        
+        Categoria categoria = categorias.get(index - 1);
+        System.out.println("Editando: " + categoria.getNomeCategoria());
+        
+        System.out.print("Novos benefícios: ");
+        String novosBeneficios = scanner.nextLine();
+        
+        if (novosBeneficios.trim().isEmpty()) {
+            throw new IllegalArgumentException("Benefícios não podem estar vazios!");
+        }
+        
+        System.out.print("Novo preço mensal (R$): ");
+        String entradaPreco = scanner.nextLine();
+        
+        double novoPreco;
+        try {
+            novoPreco = Double.parseDouble(entradaPreco);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Digite um preço válido!");
+        }
+        
+        categoria.setBeneficios(novosBeneficios);
+        categoria.setPrecoMensal(novoPreco);
+        salvarDados();
     }
     
-    public ArrayList<Socio> getSocios() {
-        return socios;
+    public void removerCategoria() throws CategoriaInvalidaException {
+        listarCategorias();
+        
+        if (categorias.isEmpty()) {
+            throw new IllegalStateException("Não há categorias para remover.");
+        }
+        
+        System.out.print("Número da categoria a remover: ");
+        String entrada = scanner.nextLine();
+        
+        int index;
+        try {
+            index = Integer.parseInt(entrada);
+        } catch (NumberFormatException e) {
+            throw new CategoriaInvalidaException("Digite um número válido!");
+        }
+        
+        if (index < 1 || index > categorias.size()) {
+            throw new CategoriaInvalidaException(index);
+        }
+        
+        categorias.remove(index - 1);
+        salvarDados();
     }
+    
+    public ArrayList<Categoria> getCategorias() { return categorias; }
+    public ArrayList<Socio> getSocios() { return socios; }
     
     public Socio encontrarSocioPorCPF(String cpf) {
         for (Socio socio : socios) {
