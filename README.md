@@ -1,6 +1,6 @@
 # ⚠️ AVISO IMPORTANTE ⚠️
 
-Esta branch (`main`) não é mais a principal e **está desatualizada**.
+Esta branch (`main`) não é mais a principal e **está desatualizada**. USADA PARA TESTES
 
 O código atualizado e correto deste projeto foi movido para a branch `master`.
 
